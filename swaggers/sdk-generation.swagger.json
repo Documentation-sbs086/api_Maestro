@@ -1,0 +1,2928 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {
+            "name": "DocuSign Developer Center",
+            "email": "devcenter@docusign.com",
+            "url": "https://developers.docusign.com/"
+        },
+        "description": "Maestro authors and executes experiences that allow non-coders the ability to define Simple Business Process without having to write code and to deploy them seamlessly without having to have development expertise",
+        "termsOfService": "https://www.docusign.com/company/terms-and-conditions/web",
+        "title": "Maestro API",
+        "version": "1.0.0"
+    },
+    "host": "www.docusign.net",
+    "basePath": "/",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "aow-auth/v1.0/accounts/{accountId}/workflows/trigger": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string",
+                        "example": "00000000-0000-0000-0000-000000000000"
+                    },
+                    {
+                        "description": "Managed Token Id registered with DS Account Server",
+                        "format": "uuid",
+                        "in": "query",
+                        "name": "mtid",
+                        "type": "string",
+                        "example": "00000000-0000-0000-0000-000000000000"
+                    },
+                    {
+                        "description": "Managed Token Secret registered with DS Account Server",
+                        "format": "uuid",
+                        "in": "query",
+                        "name": "mtsec",
+                        "type": "string",
+                        "example": "00000000-0000-0000-0000-000000000000"
+                    },
+                    {
+                        "description": "JSON payload that will be passed to the triggered workflow",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TriggerPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns a workflow instance trigger URL that can be used to trigger a new instance or return to an instance in progress",
+                        "schema": {
+                            "$ref": "#/definitions/TriggerWorkflowViaPostResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request received",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization Denied",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found when workflow definition id or workflow instance id doesn't exist",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Trigger"
+                ],
+                "description": "Creates a new workflow instance after authenticating with DS Account Server",
+                "operationId": "triggerWorkflowViaPost",
+                "summary": "Creates a new workflow instance after authenticating with DS Account Server",
+                "x-ds-methodname": "triggerWorkflow"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/instances/{instanceId}/cancel": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "DS Workflow Instance Id (dacId)",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "instanceId",
+                        "required": true,
+                        "type": "string",
+                        "example": "00000000-0000-0000-0000-000000000000"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return Success",
+                        "schema": {
+                            "$ref": "#/definitions/CancelResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "The requested resource was not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Instance Management"
+                ],
+                "description": "Cancels a running workflow instance.",
+                "operationId": "cancelWorkflowInstance",
+                "summary": "Cancels a running workflow instance.",
+                "x-ds-methodname": "cancelWorkflowInstance"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/instances/{instanceId}/history": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "DS Workflow Instance Id (dacId)",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "instanceId",
+                        "required": true,
+                        "type": "string",
+                        "example": "00000000-0000-0000-0000-000000000000"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "History of workflow steps is returned",
+                        "schema": {
+                            "description": "Returns Array of Workflow Step History.",
+                            "items": {
+                                "$ref": "#/definitions/WorkflowStepHistory"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "The requested resource was not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Instance Management"
+                ],
+                "description": "Returns a list of step history for a workflow instance",
+                "operationId": "getWorkflowHistory",
+                "summary": "Get List of Step Histories",
+                "x-ds-methodname": "getWorkflowHistory"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/workflowDefinitions": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "workflow definition metadata status",
+                        "enum": [
+                            "active",
+                            "inactive",
+                            "publishing",
+                            "unpublishing",
+                            "archived",
+                            "archiving"
+                        ],
+                        "in": "query",
+                        "name": "status",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a list of workflow definitions' metadata.",
+                        "schema": {
+                            "$ref": "#/definitions/WorkflowDefinitionList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request received",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Management"
+                ],
+                "description": "Returns a list of workflow definitions' metadata.",
+                "operationId": "getWorkflowDefinitions",
+                "summary": "Get Workflow Definitions metadata",
+                "x-ds-methodname": "getWorkflowDefinitions"
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Request Body to create a new workflow definition.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateOrUpdateWorkflowDefinitionRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return Success",
+                        "schema": {
+                            "$ref": "#/definitions/NewOrUpdatedWorkflowDefinitionResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "The requested resource was not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Management"
+                ],
+                "description": "Creates a new workflow definition.",
+                "operationId": "createNewWorkflowDefinition",
+                "summary": "Creates a new workflow definition.",
+                "x-ds-methodname": "createWorkflowDefinition"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/workflowDefinitions/{workflowDefinitionId}": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Workflow Definition ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "workflowDefinitionId",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns Delete Successful.",
+                        "schema": {
+                            "$ref": "#/definitions/WorkflowDeleteResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Management"
+                ],
+                "description": "Deletes a workflow definition.",
+                "operationId": "deleteWorkflowDefinition",
+                "summary": "Deletes a workflow definition.",
+                "x-ds-methodname": "deleteWorkflowDefinition"
+            },
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Workflow Definition ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "workflowDefinitionId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "deployed workflow definition metadata object id",
+                        "format": "string",
+                        "in": "query",
+                        "name": "lastDeployedId",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a workflow definition.",
+                        "schema": {
+                            "$ref": "#/definitions/WorkflowDefinitionWithId"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request received",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Management"
+                ],
+                "description": "Returns a workflow definition.",
+                "operationId": "getWorkflowDefinition",
+                "summary": "Get Workflow Definition",
+                "x-ds-methodname": "getWorkflowDefinition"
+            },
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Workflow Definition ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "workflowDefinitionId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Request Body to update a workflow definition.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateOrUpdateWorkflowDefinitionRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return Success",
+                        "schema": {
+                            "$ref": "#/definitions/NewOrUpdatedWorkflowDefinitionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, malformed input",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "The requested resource was not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Management"
+                ],
+                "description": "Updates a workflow definition.",
+                "operationId": "updateWorkflowDefinition",
+                "summary": "Updates a workflow definition.",
+                "x-ds-methodname": "updateWorkflowDefinition"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/workflowDefinitions/{workflowDefinitionId}/configInstances": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Workflow Definition ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "workflowDefinitionId",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a list of configuration instances for a workflow definition",
+                        "schema": {
+                            "$ref": "#/definitions/GetConfigurationInstancesResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request received",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Management"
+                ],
+                "description": "Returns a list of configuration instances for a workflow definition",
+                "operationId": "getConfigInstances",
+                "summary": "Gets configuration instances",
+                "x-ds-methodname": "getWorkflowDefinitionConfigInstances"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/workflowDefinitions/{workflowDefinitionId}/instances": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Workflow Definition ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "workflowDefinitionId",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of workflow instances for a workflow definition in the specified account.",
+                        "schema": {
+                            "description": "A list of workflow instances (0 or more).",
+                            "items": {
+                                "$ref": "#/definitions/WorkflowInstance"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "The requested resource was not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Instance Management"
+                ],
+                "description": "Returns the list of instances for a deployed workflow definition.",
+                "operationId": "getWorkflowInstances",
+                "summary": "Get List of Workflow Instances",
+                "x-ds-methodname": "getWorkflowInstances"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/workflowDefinitions/{workflowDefinitionId}/instances/{instanceId}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Workflow Definition ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "workflowDefinitionId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "DS Workflow Instance Id (dacId)",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "instanceId",
+                        "required": true,
+                        "type": "string",
+                        "example": "00000000-0000-0000-0000-000000000000"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Details for a specific instance for a workflow definition in the specified account.",
+                        "schema": {
+                            "$ref": "#/definitions/WorkflowInstance"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "The requested resource was not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Instance Management"
+                ],
+                "description": "Returns the details for a specific instance for a deployed workflow definition.",
+                "operationId": "getWorkflowInstance",
+                "summary": "Get Workflow Instance Details",
+                "x-ds-methodname": "getWorkflowInstance"
+            }
+        },
+        "aow-manage/v1.0/management/accounts/{accountId}/workflowDefinitions/{workflowDefinitionId}/publish": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "Account ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "accountId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Workflow Definition ID",
+                        "format": "uuid",
+                        "in": "path",
+                        "name": "workflowDefinitionId",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "description": "Request Body to publish or unpublish a workflow definition.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DeployRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return Success",
+                        "schema": {
+                            "$ref": "#/definitions/DeployResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Workflow Definition is invalid",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidWorkflowResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Authentication details are invalid",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "The requested resource was not found",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorResponse"
+                        }
+                    }
+                },
+                "tags": [
+                    "Workflow Management"
+                ],
+                "description": "Publishes or unpublishes a workflow definition.",
+                "operationId": "publishOrUnPublishWorkflowDefinition",
+                "summary": "Publishes or unpublishes a workflow definition.",
+                "x-ds-methodname": "publishOrUnPublishWorkflowDefinition"
+            }
+        }
+    },
+    "definitions": {
+        "AccessTokenResponse": {
+            "description": "Access Token response details",
+            "properties": {
+                "access_token": {
+                    "description": "JWT access token",
+                    "type": "string"
+                },
+                "expires_in": {
+                    "description": "Expires in seconds",
+                    "type": "number"
+                },
+                "token_type": {
+                    "$ref": "#/definitions/AccessTokenTokenTypes"
+                }
+            },
+            "type": "object"
+        },
+        "AccessTokenTokenTypes": {
+            "description": "Access Token token Types",
+            "enum": [
+                "Bearer",
+                "Application",
+                "Resource"
+            ],
+            "type": "string"
+        },
+        "AccountId": {
+            "description": "Account Id",
+            "example": "00000000-0000-0000-0000-000000000000",
+            "format": "uuid",
+            "type": "string"
+        },
+        "AowUUID": {
+            "example": "00000000-0000-0000-0000-000000000000",
+            "format": "uuid",
+            "type": "string"
+        },
+        "AowUUIDString": {
+            "format": "uuid",
+            "type": "string"
+        },
+        "CancelResponse": {
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ],
+            "type": "object"
+        },
+        "CreateOrUpdateWorkflowDefinitionRequestBody": {
+            "description": "A request body that used for create or update workflow definition",
+            "properties": {
+                "workflowDefinition": {
+                    "$ref": "#/definitions/WorkflowDefinition"
+                }
+            },
+            "type": "object"
+        },
+        "DSDoUntilStep": {
+            "properties": {
+                "doSteps": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of #/definitions/DSWorkflowStep. Each element is: A DS Workflow Step. This object should be any of the following object models: [#/definitions/DSServiceStep, #/definitions/DSTransformationStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+                },
+                "expression": {
+                    "$ref": "#/definitions/DSWorkflowComparisonExpression"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.DoUntil"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "doSteps",
+                "expression"
+            ],
+            "type": "object"
+        },
+        "DSDocGenStep": {
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/RecordToNever"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "input": {
+                    "properties": {
+                        "dataJson": {
+                            "$ref": "#/definitions/RecordStringOrVariableOrTransformation"
+                        },
+                        "outputFileName": {
+                            "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        },
+                        "outputFileNameIsUnique": {
+                            "type": "boolean"
+                        },
+                        "outputFormat": {
+                            "$ref": "#/definitions/DSWorkflowDocGenDocOutputFormat"
+                        },
+                        "templateId": {
+                            "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "outputFormat",
+                        "outputFileNameIsUnique",
+                        "outputFileName",
+                        "templateId",
+                        "dataJson"
+                    ],
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                        "type": "object"
+                    },
+                    "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.DSDocGen"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "config",
+                "input",
+                "output"
+            ],
+            "type": "object"
+        },
+        "DSIdvStep": {
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/RecordToNever"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "input": {
+                    "properties": {
+                        "backgroundColorBranding": {
+                            "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        },
+                        "expectedFullName": {
+                            "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        },
+                        "retryLimit": {
+                            "description": "This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        },
+                        "textColorBranding": {
+                            "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "textColorBranding",
+                        "backgroundColorBranding",
+                        "expectedFullName",
+                        "retryLimit"
+                    ],
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                        "type": "object"
+                    },
+                    "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.DSIdv"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "config",
+                "input",
+                "output"
+            ],
+            "type": "object"
+        },
+        "DSIfElseStep": {
+            "properties": {
+                "elseSteps": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of #/definitions/DSWorkflowStep. Each element is: A DS Workflow Step. This object should be any of the following object models: [#/definitions/DSServiceStep, #/definitions/DSTransformationStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+                },
+                "expression": {
+                    "$ref": "#/definitions/DSWorkflowBooleanExpression"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "ifSteps": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of #/definitions/DSWorkflowStep. Each element is: A DS Workflow Step. This object should be any of the following object models: [#/definitions/DSServiceStep, #/definitions/DSTransformationStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.DSIfElse"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "ifSteps",
+                "elseSteps",
+                "expression"
+            ],
+            "type": "object"
+        },
+        "DSLoopStep": {
+            "properties": {
+                "expression": {
+                    "$ref": "#/definitions/DSWorkflowComparisonExpression"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "loopSteps": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of #/definitions/DSWorkflowStep. Each element is: A DS Workflow Step. This object should be any of the following object models: [#/definitions/DSServiceStep, #/definitions/DSTransformationStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.Loop"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "loopSteps",
+                "expression"
+            ],
+            "type": "object"
+        },
+        "DSParallelStep": {
+            "properties": {
+                "expression": {
+                    "$ref": "#/definitions/DSWorkflowParallelExpression"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "lanes": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/DSWorkflowLane"
+                    },
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.Parallel"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "lanes",
+                "expression"
+            ],
+            "type": "object"
+        },
+        "DSServiceStep": {
+            "description": "A DS Workflow Service Step. This object should be any of the following object models: [#/definitions/DSWebFormsStep, #/definitions/DSIdvStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+        },
+        "DSSignStep": {
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/RecordToNever"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "input": {
+                    "properties": {
+                        "documents": {
+                            "items": {
+                                "type": "object"
+                            },
+                            "type": "array",
+                            "description": "A list of #/definitions/ESignDocuments. Each element is: ESignDocument Object. This object should be any of the following object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
+                        },
+                        "emailBlurb": {
+                            "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        },
+                        "emailSubject": {
+                            "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                            "type": "object"
+                        },
+                        "isEmbeddedSign": {
+                            "type": "boolean"
+                        },
+                        "signers": {
+                            "items": {
+                                "$ref": "#/definitions/ESignSigner"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "signers",
+                        "documents",
+                        "isEmbeddedSign"
+                    ],
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                        "type": "object"
+                    },
+                    "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.DSSign"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "config",
+                "input",
+                "output"
+            ],
+            "type": "object"
+        },
+        "DSTransformationStep": {
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/RecordToNever"
+                },
+                "expression": {
+                    "description": "Reference of #/definitions/DSWorkflowTransformationExpression. Transformation Expression object. This object should be any of the following object models: [#/definitions/DSWorkflowReplaceExpression, #/definitions/DSWorkflowToLowerExpression, #/definitions/DSWorkflowToUpperExpression, #/components/schemas/DSWorkflowLastIndexOfExpression, #/components/schemas/DSWorkflowIndexOfExpression, #/components/schemas/DSWorkflowSubstringExpression, #/components/schemas/DSWorkflowConcatExpression]",
+                    "type": "object"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "input": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                        "type": "object"
+                    },
+                    "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                        "type": "object"
+                    },
+                    "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.DSTransformation"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "config",
+                "input",
+                "output",
+                "expression"
+            ],
+            "type": "object"
+        },
+        "DSWebFormsStep": {
+            "description": "A DS Workflow WebForms Step",
+            "properties": {
+                "config": {
+                    "properties": {
+                        "pageUrl": {
+                            "format": "uri",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "pageUrl"
+                    ]
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "input": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                        "type": "object"
+                    },
+                    "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                        "type": "object"
+                    },
+                    "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowStepTypes.DSWebForms"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "config",
+                "input",
+                "output"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowBooleanExpression": {
+            "properties": {
+                "expressions": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of objects. Each object should contain any of the following object models: [#/definitions/DSWorkflowBooleanExpression, #/definitions/DSWorkflowComparisonExpression]"
+                },
+                "logicalOperator": {
+                    "$ref": "#/definitions/DSWorkflowLogicalOperatorTypes"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowExpressionTypes.BooleanExpression"
+                }
+            },
+            "required": [
+                "type",
+                "logicalOperator",
+                "expressions"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowComparisonExpression": {
+            "properties": {
+                "comparisonOperator": {
+                    "$ref": "#/definitions/DSWorkflowComparisonOperatorTypes"
+                },
+                "leftOperand": {
+                    "description": "This model should be any of the following object models or types: [number, boolean, #/definitions/StringOrVariableOrTransformation]",
+                    "type": "object"
+                },
+                "rightOperand": {
+                    "description": "This model should be any of the following object models or types: [number, boolean, #/definitions/StringOrVariableOrTransformation]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowExpressionTypes.ComparisonExpression"
+                }
+            },
+            "required": [
+                "type",
+                "comparisonOperator",
+                "leftOperand",
+                "rightOperand"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowComparisonOperatorTypes": {
+            "enum": [
+                "Contains",
+                "NotContains",
+                "Equal",
+                "NotEqual",
+                "GreaterThan",
+                "GreaterThanOrEqual",
+                "LessThan",
+                "LessThanOrEqual",
+                "StartsWith",
+                "NotStartsWith",
+                "EndsWith",
+                "NotEndsWith"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowConcatExpression": {
+            "properties": {
+                "inputs": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of #/definitions/StringOrVariableOrTransformation. Each element is: Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTransformationExpressionTypes.ConcatExpression"
+                }
+            },
+            "required": [
+                "type",
+                "text",
+                "text2"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowDocGenDocOutputFormat": {
+            "enum": [
+                "pdf",
+                "docx"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowExpressionTypes.BooleanExpression": {
+            "enum": [
+                "BooleanExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowExpressionTypes.ComparisonExpression": {
+            "enum": [
+                "ComparisonExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowExpressionTypes.ParallelExpression": {
+            "enum": [
+                "ParallelExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowIndexOfExpression": {
+            "properties": {
+                "searchText": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "text": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTransformationExpressionTypes.IndexOfExpression"
+                }
+            },
+            "required": [
+                "type",
+                "text",
+                "searchText"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowLane": {
+            "properties": {
+                "laneId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "laneSteps": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of #/definitions/DSWorkflowStep. Each element is: A DS Workflow Step. This object should be any of the following object models: [#/definitions/DSServiceStep, #/definitions/DSTransformationStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+                }
+            },
+            "required": [
+                "laneId",
+                "laneSteps"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowLanesRecord": {
+            "additionalProperties": {
+                "$ref": "#/definitions/DSWorkflowLane"
+            },
+            "type": "object"
+        },
+        "DSWorkflowLastIndexOfExpression": {
+            "properties": {
+                "searchText": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "text": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTransformationExpressionTypes.LastIndexOfExpression"
+                }
+            },
+            "required": [
+                "type",
+                "text",
+                "searchText"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowLogicalOperatorTypes": {
+            "enum": [
+                "And",
+                "Or"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowParallelExpression": {
+            "properties": {
+                "parallelCompletionSettings": {
+                    "additionalProperties": {
+                        "type": "boolean"
+                    },
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowExpressionTypes.ParallelExpression"
+                }
+            },
+            "required": [
+                "type",
+                "parallelCompletionSettings"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowParticipantRecord": {
+            "additionalProperties": {
+                "$ref": "#/definitions/Participant"
+            },
+            "description": "A DS Workflow participant record",
+            "type": "object"
+        },
+        "DSWorkflowReplaceExpression": {
+            "properties": {
+                "newText": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "oldText": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "text": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTransformationExpressionTypes.ReplaceExpression"
+                }
+            },
+            "required": [
+                "type",
+                "text",
+                "oldText",
+                "newText"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowStep": {
+            "description": "A DS Workflow Step. This object should be any of the following object models: [#/definitions/DSServiceStep, #/definitions/DSTransformationStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+        },
+        "DSWorkflowStepTypes.DSDocGen": {
+            "enum": [
+                "DS-DocGen"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.DSIdv": {
+            "enum": [
+                "DS-IDV"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.DSIfElse": {
+            "enum": [
+                "DS-IfElse"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.DSSign": {
+            "enum": [
+                "DS-Sign"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.DSTransformation": {
+            "enum": [
+                "DS-Transformation"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.DSWebForms": {
+            "enum": [
+                "DS-WebForms"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.DoUntil": {
+            "enum": [
+                "DS-DoUntil"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.Loop": {
+            "enum": [
+                "DS-Loop"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowStepTypes.Parallel": {
+            "enum": [
+                "DS-Parallel"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowSubstringExpression": {
+            "properties": {
+                "length": {
+                    "description": "Reference of #/definitions/NumberOrVariable. Object stands for a number or a Variable. This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable]",
+                    "type": "object"
+                },
+                "startIndex": {
+                    "description": "Reference of #/definitions/NumberOrVariable. Object stands for a number or a Variable. This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable]",
+                    "type": "object"
+                },
+                "text": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTransformationExpressionTypes.SubstringExpression"
+                }
+            },
+            "required": [
+                "type",
+                "text",
+                "startIndex"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowToLowerExpression": {
+            "properties": {
+                "text": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTransformationExpressionTypes.ToLowerExpression"
+                }
+            },
+            "required": [
+                "type",
+                "text"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowToUpperExpression": {
+            "properties": {
+                "text": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTransformationExpressionTypes.ToUpperExpression"
+                }
+            },
+            "required": [
+                "type",
+                "text"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowTransformationExpression": {
+            "description": "Transformation Expression object. This object should be any of the following object models: [#/definitions/DSWorkflowReplaceExpression, #/definitions/DSWorkflowToLowerExpression, #/definitions/DSWorkflowToUpperExpression, #/components/schemas/DSWorkflowLastIndexOfExpression, #/components/schemas/DSWorkflowIndexOfExpression, #/components/schemas/DSWorkflowSubstringExpression, #/components/schemas/DSWorkflowConcatExpression]"
+        },
+        "DSWorkflowTransformationExpressionTypes.ConcatExpression": {
+            "enum": [
+                "ConcatExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowTransformationExpressionTypes.IndexOfExpression": {
+            "enum": [
+                "IndexOfExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowTransformationExpressionTypes.LastIndexOfExpression": {
+            "enum": [
+                "LastIndexOfExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowTransformationExpressionTypes.ReplaceExpression": {
+            "enum": [
+                "ReplaceExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowTransformationExpressionTypes.SubstringExpression": {
+            "enum": [
+                "SubstringExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowTransformationExpressionTypes.ToLowerExpression": {
+            "enum": [
+                "ToLowerExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowTransformationExpressionTypes.ToUpperExpression": {
+            "enum": [
+                "ToUpperExpression"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowTrigger": {
+            "description": "A DS workflow trigger.",
+            "properties": {
+                "eventType": {
+                    "$ref": "#/definitions/EventTypes"
+                },
+                "httpType": {
+                    "$ref": "#/definitions/HttpTypes"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "input": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables",
+                        "type": "object"
+                    },
+                    "description": "A DS Workflow variable record",
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables",
+                        "type": "object"
+                    },
+                    "description": "A DS Workflow variable record",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/DSWorkflowTriggerTypes"
+                }
+            },
+            "required": [
+                "name",
+                "id",
+                "type",
+                "httpType",
+                "input",
+                "output"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowTriggerTypes": {
+            "description": "The DS Workflow Trigger types",
+            "enum": [
+                "Http",
+                "Http-API"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowVariable": {
+            "description": "DS Workflow Variables"
+        },
+        "DSWorkflowVariableFromParticipant": {
+            "description": "DS Workflow Variable from a Participant",
+            "properties": {
+                "key": {
+                    "$ref": "#/definitions/ParticipantKeys"
+                },
+                "participantId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "source": {
+                    "$ref": "#/definitions/DSWorkflowVariableSourceTypes.Participant"
+                }
+            },
+            "required": [
+                "source",
+                "key",
+                "participantId"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowVariableFromStep": {
+            "description": "DS Workflow Variable from a Step",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "propertyName": {
+                    "type": "string"
+                },
+                "source": {
+                    "$ref": "#/definitions/DSWorkflowVariableSourceTypes.Step"
+                },
+                "stepId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                }
+            },
+            "required": [
+                "source",
+                "key",
+                "propertyName",
+                "stepId"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowVariableFromVariable": {
+            "description": "DS Workflow Variable from a Variable",
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "propertyName": {
+                    "type": "string"
+                },
+                "source": {
+                    "$ref": "#/definitions/DSWorkflowVariableSourceTypes.Variable"
+                },
+                "stepId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                }
+            },
+            "required": [
+                "source",
+                "key",
+                "propertyName",
+                "stepId"
+            ],
+            "type": "object"
+        },
+        "DSWorkflowVariableRecord": {
+            "additionalProperties": {
+                "description": "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables",
+                "type": "object"
+            },
+            "description": "A DS Workflow variable record",
+            "type": "object"
+        },
+        "DSWorkflowVariableSourceTypes.Participant": {
+            "enum": [
+                "participant"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowVariableSourceTypes.Step": {
+            "enum": [
+                "step"
+            ],
+            "type": "string"
+        },
+        "DSWorkflowVariableSourceTypes.Variable": {
+            "enum": [
+                "variable"
+            ],
+            "type": "string"
+        },
+        "DeployRequest": {
+            "properties": {
+                "deploymentStatus": {
+                    "$ref": "#/definitions/DeployStatus"
+                }
+            },
+            "required": [
+                "deploymentStatus"
+            ],
+            "type": "object"
+        },
+        "DeployResponse": {
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "pollUrl": {
+                    "format": "uri",
+                    "type": "string"
+                },
+                "receivedTime": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message",
+                "pollUrl"
+            ],
+            "type": "object"
+        },
+        "DeployStatus": {
+            "enum": [
+                "Publish",
+                "UnPublish",
+                "Disable"
+            ],
+            "type": "string"
+        },
+        "DeploymentStatus": {
+            "description": "The workflow deployment status",
+            "enum": [
+                "Deployment In Progress",
+                "Deployed",
+                "Failed",
+                "Delete in Progress",
+                "Deleted",
+                "Not Deployed"
+            ],
+            "type": "string"
+        },
+        "DsStepId": {
+            "description": "DS Step Id <TODO>",
+            "format": "uuid",
+            "type": "string"
+        },
+        "ESignDocumentFromESignTemplate": {
+            "properties": {
+                "eSignTemplateId": {
+                    "type": "string"
+                },
+                "fileExtension": {
+                    "$ref": "#/definitions/DSWorkflowDocGenDocOutputFormat"
+                },
+                "name": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/ESignDocumentTypes.FromDSTemplate"
+                }
+            },
+            "required": [
+                "type",
+                "eSignTemplateId",
+                "fileExtension",
+                "name"
+            ],
+            "type": "object"
+        },
+        "ESignDocumentFromPreviousStep": {
+            "properties": {
+                "documentFromPreviousStep": {
+                    "description": "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables",
+                    "type": "object"
+                },
+                "fileExtension": {
+                    "$ref": "#/definitions/DSWorkflowDocGenDocOutputFormat"
+                },
+                "name": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "type": {
+                    "$ref": "#/definitions/ESignDocumentTypes.FromPreviousStep"
+                }
+            },
+            "required": [
+                "type",
+                "documentFromPreviousStep",
+                "fileExtension",
+                "name"
+            ],
+            "type": "object"
+        },
+        "ESignDocumentTypes.FromDSTemplate": {
+            "enum": [
+                "FromDSTemplate"
+            ],
+            "type": "string"
+        },
+        "ESignDocumentTypes.FromPreviousStep": {
+            "enum": [
+                "FromPreviousStep"
+            ],
+            "type": "string"
+        },
+        "ESignDocuments": {
+            "description": "ESignDocument Object. This object should be any of the following object models: [#/definitions/ESignDocumentFromPreviousStep, #/definitions/ESignDocumentFromESignTemplate]"
+        },
+        "ESignLocalePolicy": {
+            "additionalProperties": {
+                "type": "object"
+            },
+            "type": "object"
+        },
+        "ESignSigner": {
+            "properties": {
+                "email": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "note": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "routingOrder": {
+                    "type": "string"
+                },
+                "tabs": {
+                    "$ref": "#/definitions/ESignTabsRecord"
+                },
+                "userName": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                }
+            },
+            "required": [
+                "userName",
+                "email",
+                "routingOrder",
+                "note",
+                "tabs"
+            ],
+            "type": "object"
+        },
+        "ESignTabs": {
+            "properties": {
+                "anchorString": {
+                    "type": "string"
+                },
+                "bold": {
+                    "type": "string"
+                },
+                "documentId": {
+                    "type": "string"
+                },
+                "font": {
+                    "type": "string"
+                },
+                "fontColor": {
+                    "type": "string"
+                },
+                "fontSize": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "string"
+                },
+                "italic": {
+                    "type": "string"
+                },
+                "localePolicy": {
+                    "additionalProperties": {
+                        "type": "object"
+                    },
+                    "type": "object"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "optional": {
+                    "type": "string"
+                },
+                "pageNumber": {
+                    "type": "string"
+                },
+                "recipientId": {
+                    "type": "string"
+                },
+                "scaleValue": {
+                    "type": "string"
+                },
+                "stampType": {
+                    "type": "string"
+                },
+                "tabId": {
+                    "type": "string"
+                },
+                "tabLabel": {
+                    "type": "string"
+                },
+                "tabType": {
+                    "type": "string"
+                },
+                "templateLocked": {
+                    "type": "string"
+                },
+                "templateRequired": {
+                    "type": "string"
+                },
+                "tooltip": {
+                    "type": "string"
+                },
+                "underline": {
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                    "type": "object"
+                },
+                "width": {
+                    "type": "string"
+                },
+                "xPosition": {
+                    "type": "string"
+                },
+                "yPosition": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "tabId"
+            ],
+            "type": "object"
+        },
+        "ESignTabsRecord": {
+            "properties": {
+                "dateSignedTabs": {
+                    "items": {
+                        "$ref": "#/definitions/ESignTabs"
+                    },
+                    "type": "array"
+                },
+                "emailAddressTabs": {
+                    "items": {
+                        "$ref": "#/definitions/ESignTabs"
+                    },
+                    "type": "array"
+                },
+                "firstNameTabs": {
+                    "items": {
+                        "$ref": "#/definitions/ESignTabs"
+                    },
+                    "type": "array"
+                },
+                "fullNameTabs": {
+                    "items": {
+                        "$ref": "#/definitions/ESignTabs"
+                    },
+                    "type": "array"
+                },
+                "lastNameTabs": {
+                    "items": {
+                        "$ref": "#/definitions/ESignTabs"
+                    },
+                    "type": "array"
+                },
+                "signHereTabs": {
+                    "items": {
+                        "$ref": "#/definitions/ESignTabs"
+                    },
+                    "type": "array"
+                },
+                "textTabs": {
+                    "items": {
+                        "$ref": "#/definitions/ESignTabs"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "ErrorCodes": {
+            "description": "Internal Error Codes",
+            "enum": [
+                "ERR_10001",
+                "ERR_10002",
+                "ERR_10003",
+                "ERR_10004",
+                "ERR_10005",
+                "ERR_10006",
+                "ERR_10007",
+                "ERR_10008",
+                "ERR_10009",
+                "ERR_10101",
+                "ERR_10201",
+                "ERR_10202",
+                "ERR_10301",
+                "ERR_10302",
+                "ERR_10801",
+                "ERR_10802",
+                "ERR_10999"
+            ],
+            "type": "string"
+        },
+        "ErrorResponse": {
+            "description": "Returns error with a status message",
+            "properties": {
+                "errorCode": {
+                    "$ref": "#/definitions/ErrorCodes"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "EventTypes": {
+            "description": "The Trigger Event types",
+            "enum": [
+                "Sent",
+                "Delivered",
+                "Signed",
+                "Completed"
+            ],
+            "type": "string"
+        },
+        "GetConfigurationInstanceResponse": {
+            "properties": {
+                "savedValues": {
+                    "additionalProperties": true,
+                    "type": "object"
+                },
+                "stepId": {
+                    "format": "uuid",
+                    "type": "string"
+                },
+                "workflowDefinitionId": {
+                    "format": "uuid",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "GetConfigurationInstancesResponse": {
+            "properties": {
+                "configInstances": {
+                    "items": {
+                        "properties": {
+                            "savedValues": {
+                                "additionalProperties": true,
+                                "type": "object"
+                            },
+                            "stepId": {
+                                "format": "uuid",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "count": {
+                    "type": "number"
+                },
+                "workflowDefinitionId": {
+                    "format": "uuid",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "HttpTypes": {
+            "description": "The Trigger Http types",
+            "enum": [
+                "Get",
+                "Post",
+                "Put",
+                "Delete"
+            ],
+            "type": "string"
+        },
+        "InvalidWorkflowResponse": {
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "validationErrors": {
+                    "items": {
+                        "$ref": "#/definitions/ValidationErrors"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "message",
+                "validationErrors"
+            ],
+            "type": "object"
+        },
+        "LastDeployedId": {
+            "example": "64655d8192f160c93b2366a1",
+            "format": "string",
+            "type": "string"
+        },
+        "NewOrUpdatedWorkflowDefinitionResponse": {
+            "properties": {
+                "isValidWorkflowDefinition": {
+                    "type": "boolean"
+                },
+                "validationErrors": {
+                    "items": {
+                        "$ref": "#/definitions/ValidationErrors"
+                    },
+                    "type": "array"
+                },
+                "workflowDefinition": {
+                    "$ref": "#/definitions/WorkflowDefinition"
+                },
+                "workflowDefinitionId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                }
+            },
+            "required": [
+                "workflowDefinitionId",
+                "workflowDefinition",
+                "isValidWorkflowDefinition",
+                "validationErrors"
+            ],
+            "type": "object"
+        },
+        "NumberOrVariable": {
+            "description": "Object stands for a number or a Variable. This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable]"
+        },
+        "Participant": {
+            "description": "A DS Workflow participant",
+            "properties": {
+                "participantEmail": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "participantFirstName": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "participantLastName": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "participantRole": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "participantRole",
+                "participantEmail",
+                "participantFirstName",
+                "participantLastName"
+            ],
+            "type": "object"
+        },
+        "ParticipantKeys": {
+            "enum": [
+                "participantEmail",
+                "participantFirstName",
+                "participantLastName"
+            ],
+            "type": "string"
+        },
+        "ProgressInstance": {
+            "description": "The progress information for a workflow instance",
+            "properties": {
+                "completedSteps": {
+                    "description": "The number of completed steps for this workflow instance",
+                    "type": "number"
+                },
+                "currentCompletedStepName": {
+                    "description": "The last completed step name",
+                    "type": "string"
+                },
+                "totalSteps": {
+                    "description": "The total number of steps for this workflow instance",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "RecordStringBoolean": {
+            "additionalProperties": {
+                "type": "boolean"
+            },
+            "type": "object"
+        },
+        "RecordStringOrVariableOrTransformation": {
+            "additionalProperties": {
+                "description": "Reference of #/definitions/StringOrVariableOrTransformation. Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]",
+                "type": "object"
+            },
+            "description": "A Record of strings to Strings, Variables, or Transformation Expressions",
+            "type": "object"
+        },
+        "RecordToNever": {
+            "additionalProperties": false,
+            "type": "object"
+        },
+        "ReplicationStatus": {
+            "description": "The workflow replication status",
+            "enum": [
+                "Deploy Replication In Progress",
+                "Deploy Replicated",
+                "Deploy Replication Failed",
+                "Not Replicated",
+                "Delete Replication in Progress",
+                "Delete Replicated",
+                "Delete Replication Failed",
+                "Unpublish replication in Progress",
+                "Unpublish Replicated",
+                "Unpublish Replication Failed"
+            ],
+            "type": "string"
+        },
+        "StartedByInstance": {
+            "description": "The started by information for a workflow instance",
+            "properties": {
+                "startedById": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "startedByName": {
+                    "description": "The user name of the person who starts a workflow Instance",
+                    "type": "string"
+                },
+                "startedByType": {
+                    "enum": [
+                        "Anonymous",
+                        "Preparer",
+                        "Participant"
+                    ],
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "StringOrVariableOrTransformation": {
+            "description": "Object stands for a String or a Variable or a Transformation. This object should be any of the following object models or types: [string, #/definitions/DSWorkflowVariable, #/definitions/DSWorkflowTransformationExpression]"
+        },
+        "SuccessMessageResponse": {
+            "description": "Returns success with a status message",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "TemplateId": {
+            "description": "Workflow Definition Id",
+            "example": "00000000-0000-0000-0000-000000000000",
+            "format": "uuid",
+            "type": "string"
+        },
+        "TriggerPayload": {
+            "description": "JSON payload that will be passed to the triggered workflow",
+            "properties": {
+                "instanceName": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object"
+                },
+                "participants": {
+                    "type": "object"
+                },
+                "payload": {
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "TriggerWorkflowViaPostResponse": {
+            "description": "Trigger workflow via POST response details",
+            "properties": {
+                "instanceId": {
+                    "$ref": "#/definitions/WorkflowInstanceId"
+                },
+                "workflowInstanceUrl": {
+                    "description": "Instance specific url that can be used to be redirected to a workflow instance",
+                    "format": "uri",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "UserId": {
+            "description": "Participant User ID",
+            "format": "uuid",
+            "type": "string"
+        },
+        "ValidationErrors": {
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message",
+                "code"
+            ],
+            "type": "object"
+        },
+        "VersionString": {
+            "example": "1.0.0",
+            "type": "string"
+        },
+        "WorkflowCreatorId": {
+            "description": "The DocuSign Admin user Id who has the ability to create workflow definitions.",
+            "example": "00000000-0000-0000-0000-000000000000",
+            "format": "uuid",
+            "type": "string"
+        },
+        "WorkflowDateTime": {
+            "format": "date-time",
+            "type": "string"
+        },
+        "WorkflowDefinition": {
+            "description": "A DS workflow definition.",
+            "properties": {
+                "accountId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "createdByName": {
+                    "description": "The name of the user who created this workflow definition",
+                    "type": "string"
+                },
+                "documentVersion": {
+                    "$ref": "#/definitions/VersionString"
+                },
+                "participants": {
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Participant"
+                    },
+                    "description": "A DS Workflow participant record",
+                    "type": "object"
+                },
+                "schemaVersion": {
+                    "$ref": "#/definitions/VersionString"
+                },
+                "steps": {
+                    "items": {
+                        "type": "object"
+                    },
+                    "type": "array",
+                    "description": "A list of #/definitions/DSWorkflowStep. Each element is: A DS Workflow Step. This object should be any of the following object models: [#/definitions/DSServiceStep, #/definitions/DSTransformationStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]"
+                },
+                "trigger": {
+                    "$ref": "#/definitions/DSWorkflowTrigger"
+                },
+                "variables": {
+                    "additionalProperties": {
+                        "description": "Reference of #/definitions/DSWorkflowVariable. DS Workflow Variables",
+                        "type": "object"
+                    },
+                    "description": "A DS Workflow variable record",
+                    "type": "object"
+                },
+                "workflowDescription": {
+                    "type": "string"
+                },
+                "workflowName": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "workflowName",
+                "workflowDescription",
+                "documentVersion",
+                "schemaVersion",
+                "accountId",
+                "trigger",
+                "variables",
+                "steps"
+            ],
+            "type": "object"
+        },
+        "WorkflowDefinitionList": {
+            "description": "Returns a list of workflow definitions' metadata (0 or more).",
+            "properties": {
+                "count": {
+                    "description": "Total number of definitions returned",
+                    "example": 1,
+                    "type": "number"
+                },
+                "value": {
+                    "description": "Array of workflow definition metadata",
+                    "items": {
+                        "$ref": "#/definitions/WorkflowDefinitionMetadata"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "WorkflowDefinitionMetadata": {
+            "description": "A DS workflow definition's metadata.",
+            "properties": {
+                "accountId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "createdDate": {
+                    "description": "The date the workflow was created",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUID"
+                },
+                "isDraft": {
+                    "type": "boolean"
+                },
+                "lastDeployedId": {
+                    "$ref": "#/definitions/LastDeployedId"
+                },
+                "lastDeployedVersion": {
+                    "type": "string"
+                },
+                "lastUpdatedDate": {
+                    "description": "The date the workflow was last updated",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/WorkflowMetadataStatus"
+                },
+                "triggerUrl": {
+                    "format": "uri",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "deploymentStatus"
+            ],
+            "type": "object"
+        },
+        "WorkflowDefinitionWithId": {
+            "description": "A DS workflow definition with metadata.",
+            "properties": {
+                "accountId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                },
+                "createdDate": {
+                    "description": "The date the workflow was created",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "id": {
+                    "$ref": "#/definitions/AowUUID"
+                },
+                "isDraft": {
+                    "type": "boolean"
+                },
+                "lastDeployedId": {
+                    "$ref": "#/definitions/LastDeployedId"
+                },
+                "lastDeployedVersion": {
+                    "type": "string"
+                },
+                "lastDeployedWorkflowDefinition": {
+                    "$ref": "#/definitions/WorkflowDefinition"
+                },
+                "lastUpdatedDate": {
+                    "description": "The date the workflow was last updated",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/WorkflowMetadataStatus"
+                },
+                "triggerUrl": {
+                    "format": "uri",
+                    "type": "string"
+                },
+                "validationErrors": {
+                    "items": {
+                        "$ref": "#/definitions/ValidationErrors"
+                    },
+                    "type": "array"
+                },
+                "workflowDefinition": {
+                    "$ref": "#/definitions/WorkflowDefinition"
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "type": "object"
+        },
+        "WorkflowDeleteResponse": {
+            "properties": {
+                "pollUrl": {
+                    "format": "uri",
+                    "type": "string"
+                },
+                "workflowDefinitionId": {
+                    "$ref": "#/definitions/AowUUIDString"
+                }
+            },
+            "required": [
+                "workflowDefinitionId",
+                "pollUrl"
+            ],
+            "type": "object"
+        },
+        "WorkflowInstance": {
+            "description": "Details of a Workflow Instance triggered for a Workflow Definition",
+            "properties": {
+                "accountId": {
+                    "$ref": "#/definitions/AccountId"
+                },
+                "creatorId": {
+                    "$ref": "#/definitions/WorkflowCreatorId"
+                },
+                "dacId": {
+                    "$ref": "#/definitions/WorkflowInstanceId"
+                },
+                "endDate": {
+                    "$ref": "#/definitions/WorkflowDateTime",
+                    "description": "Track the End time of the Workflow Instance"
+                },
+                "instanceName": {
+                    "description": "The friendly name of the particular workflow instance",
+                    "type": "string"
+                },
+                "instanceState": {
+                    "$ref": "#/definitions/WorkflowInstanceState"
+                },
+                "progress": {
+                    "$ref": "#/definitions/ProgressInstance"
+                },
+                "startDate": {
+                    "$ref": "#/definitions/WorkflowDateTime",
+                    "description": "Track the Start time of the Workflow Instance"
+                },
+                "startedBy": {
+                    "$ref": "#/definitions/StartedByInstance"
+                },
+                "templateId": {
+                    "$ref": "#/definitions/TemplateId"
+                },
+                "users": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "type": "object"
+                }
+            },
+            "required": [
+                "templateId",
+                "dacId",
+                "creatorId",
+                "users",
+                "instanceState"
+            ],
+            "type": "object"
+        },
+        "WorkflowInstanceId": {
+            "description": "Workflow Instance Id",
+            "example": "00000000-0000-0000-0000-000000000000",
+            "format": "uuid",
+            "type": "string"
+        },
+        "WorkflowInstanceMap": {
+            "additionalProperties": {
+                "type": "string"
+            },
+            "type": "object"
+        },
+        "WorkflowInstanceState": {
+            "description": "Current Workflow Instance state (completed, failed, In-progress)",
+            "enum": [
+                "In Progress",
+                "Completed",
+                "Failed"
+            ],
+            "type": "string"
+        },
+        "WorkflowInstancesList": {
+            "description": "A list of workflow instances (0 or more).",
+            "items": {
+                "$ref": "#/definitions/WorkflowInstance"
+            },
+            "type": "array"
+        },
+        "WorkflowMetadataStatus": {
+            "description": "Workflow Definition Metadata Status",
+            "enum": [
+                "active",
+                "inactive",
+                "publishing",
+                "unpublishing",
+                "archived",
+                "archiving"
+            ],
+            "type": "string"
+        },
+        "WorkflowStepError": {
+            "description": "Workflow Step History Error",
+            "properties": {
+                "code": {
+                    "description": "Error code message",
+                    "type": "string"
+                },
+                "endTime": {
+                    "$ref": "#/definitions/WorkflowDateTime",
+                    "description": "Track the End time of the error retry/processed"
+                },
+                "error": {
+                    "properties": {
+                        "code": {
+                            "description": "The Error Code Message",
+                            "type": "string"
+                        },
+                        "message": {
+                            "description": "Error Message which shares more details",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "name": {
+                    "description": "The workflow step name where the error occurred",
+                    "type": "string"
+                },
+                "startTime": {
+                    "$ref": "#/definitions/WorkflowDateTime",
+                    "description": "Track Start time of the error occurred"
+                }
+            },
+            "type": "object"
+        },
+        "WorkflowStepHistory": {
+            "description": "Details (history) of a Workflow Instance Step",
+            "properties": {
+                "accountId": {
+                    "$ref": "#/definitions/AccountId"
+                },
+                "dacId": {
+                    "$ref": "#/definitions/WorkflowInstanceId"
+                },
+                "dsStepId": {
+                    "$ref": "#/definitions/DsStepId"
+                },
+                "endDate": {
+                    "$ref": "#/definitions/WorkflowDateTime",
+                    "description": "Track the End time of the Workflow Step"
+                },
+                "error": {
+                    "$ref": "#/definitions/WorkflowStepError"
+                },
+                "outputModuleProperties": {
+                    "additionalProperties": true,
+                    "type": "object"
+                },
+                "startDate": {
+                    "$ref": "#/definitions/WorkflowDateTime",
+                    "description": "Track the Start time of the Workflow Step"
+                },
+                "stepId": {
+                    "$ref": "#/definitions/AowUUID",
+                    "description": "The Step Id of the workflow step in the workflow instance"
+                },
+                "stepName": {
+                    "description": "Name of the workflow step (DS Scope)",
+                    "type": "string"
+                },
+                "stepState": {
+                    "$ref": "#/definitions/WorkflowStepHistoryState"
+                },
+                "userId": {
+                    "$ref": "#/definitions/UserId"
+                }
+            },
+            "required": [
+                "dacId",
+                "stepName",
+                "stepState",
+                "userId"
+            ],
+            "type": "object"
+        },
+        "WorkflowStepHistoryList": {
+            "description": "Returns Array of Workflow Step History.",
+            "items": {
+                "$ref": "#/definitions/WorkflowStepHistory"
+            },
+            "type": "array"
+        },
+        "WorkflowStepHistoryState": {
+            "description": "Workflow Step History state (completed, failed, In-progress)",
+            "enum": [
+                "In Progress",
+                "Completed",
+                "Failed"
+            ],
+            "type": "string"
+        }
+    },
+    "securityDefinitions": {
+        "docusignAccessCode": {
+            "type": "oauth2",
+            "flow": "accessCode",
+            "authorizationUrl": "https://account.docusign.com/oauth/auth",
+            "tokenUrl": "https://account.docusign.com/oauth/token"
+        }
+    },
+    "externalDocs": {
+        "description": "Maestro API Documentation",
+        "url": "https://developers.docusign.com/docs/maestro-api/"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "security": [
+        {
+            "docusignAccessCode": []
+        }
+    ]
+}
