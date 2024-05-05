@@ -1,0 +1,1 @@
+The progress information for a workflow instance

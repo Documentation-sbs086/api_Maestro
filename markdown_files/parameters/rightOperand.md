@@ -1,0 +1,1 @@
+This model should be any of the following object models or types: [number, boolean, #/definitions/StringOrVariableOrTransformation]

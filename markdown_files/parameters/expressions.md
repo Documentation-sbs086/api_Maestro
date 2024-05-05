@@ -1,0 +1,1 @@
+A list of objects. Each object should contain any of the following object models: [#/definitions/DSWorkflowBooleanExpression, #/definitions/DSWorkflowComparisonExpression]

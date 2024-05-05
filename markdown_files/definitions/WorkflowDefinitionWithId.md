@@ -1,0 +1,1 @@
+A DS workflow definition with metadata.

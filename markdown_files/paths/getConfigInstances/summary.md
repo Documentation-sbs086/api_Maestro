@@ -1,0 +1,1 @@
+Gets configuration instances

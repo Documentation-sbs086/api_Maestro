@@ -1,0 +1,1 @@
+Current Workflow Instance state (completed, failed, In-progress)

@@ -1,0 +1,1 @@
+Reference of #/definitions/NumberOrVariable. Object stands for a number or a Variable. This object should be any of the following object models or types: [number, #/definitions/DSWorkflowVariable]

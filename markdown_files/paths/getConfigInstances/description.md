@@ -1,0 +1,1 @@
+Returns a list of configuration instances for a workflow definition

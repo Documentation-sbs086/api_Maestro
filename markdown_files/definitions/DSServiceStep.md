@@ -1,0 +1,1 @@
+A DS Workflow Service Step. This object should be any of the following object models: [#/definitions/DSWebFormsStep, #/definitions/DSIdvStep, #/definitions/DSDocGenStep, #/definitions/DSSignStep]

@@ -1,0 +1,1 @@
+Managed Token Id registered with DS Account Server

@@ -1,0 +1,1 @@
+Returns a list of workflow definitions' metadata (0 or more).

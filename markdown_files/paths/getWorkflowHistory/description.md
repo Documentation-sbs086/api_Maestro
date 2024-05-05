@@ -1,0 +1,1 @@
+Returns a list of step history for a workflow instance

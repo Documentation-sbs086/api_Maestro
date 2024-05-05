@@ -1,0 +1,1 @@
+Returns the details for a specific instance for a deployed workflow definition.
